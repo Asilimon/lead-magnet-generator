@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lead Magnet Generator ✨</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #FDF8F0;
+    --warm-white: #FFFCF7;
+    --ink: #1C1A16;
+    --ink-light: #5C5750;
+    --gold: #D4A847;
+    --gold-light: #F5E6B8;
+    --gold-pale: #FBF4DF;
+    --coral: #E8785A;
+    --coral-light: #FDE8E1;
+    --sage: #6B8F71;
+    --sage-light: #E4EDE5;
+    --radius: 16px;
+    --shadow: 0 4px 24px rgba(28,26,22,0.08);
+    --shadow-lg: 0 8px 48px rgba(28,26,22,0.14);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 16px 60px;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: -120px; right: -120px;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, var(--gold-light) 0%, transparent 70%);
+    pointer-events: none; z-index: 0;
+  }
+  body::after {
+    content: '';
+    position: fixed;
+    bottom: -100px; left: -100px;
+    width: 350px; height: 350px;
+    background: radial-gradient(circle, var(--coral-light) 0%, transparent 70%);
+    pointer-events: none; z-index: 0;
+  }
+
+  .container {
+    width: 100%; max-width: 640px;
+    position: relative; z-index: 1;
+  }
+
+  /* Header */
+  .header { text-align: center; padding: 32px 0 28px; }
+  .header h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(28px, 6vw, 42px);
+    font-weight: 700; line-height: 1.15;
+    color: var(--ink); margin-bottom: 12px;
+  }
+  .header h1 em { font-style: italic; color: var(--coral); }
+  .header p {
+    color: var(--ink-light); font-size: 16px;
+    line-height: 1.6; max-width: 460px; margin: 0 auto;
+  }
+
+  /* Progress */
+  .progress-wrap { margin: 24px 0; }
+  .progress-steps {
+    display: flex; align-items: center;
+    justify-content: center; gap: 8px; margin-bottom: 12px;
+  }
+  .step-dot { display: flex; align-items: center; gap: 8px; }
+  .dot {
+    width: 32px; height: 32px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 600;
+    transition: all 0.3s ease; border: 2px solid transparent;
+  }
+  .dot.done   { background: var(--sage);  color: white; border-color: var(--sage); }
+  .dot.active { background: var(--gold);  color: white; border-color: var(--gold); box-shadow: 0 0 0 4px var(--gold-light); }
+  .dot.upcoming { background: var(--cream); color: var(--ink-light); border-color: #D9D3C7; }
+  .step-line { width: 40px; height: 2px; background: #D9D3C7; border-radius: 2px; transition: background 0.3s; }
+  .step-line.done { background: var(--sage); }
+  .progress-label { text-align: center; font-size: 13px; color: var(--ink-light); font-weight: 500; }
+
+  /* Card */
+  .card {
+    background: var(--warm-white);
+    border-radius: 24px; padding: 36px 32px;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(255,255,255,0.8);
+    animation: slideUp 0.4s cubic-bezier(0.16,1,0.3,1);
+  }
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @media (max-width: 480px) { .card { padding: 28px 20px; } }
+
+  .question-num {
+    font-size: 12px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 8px;
+  }
+  .question-title {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(20px, 4vw, 26px); font-weight: 600;
+    line-height: 1.3; color: var(--ink); margin-bottom: 6px;
+  }
+  .question-hint { font-size: 14px; color: var(--ink-light); margin-bottom: 8px; line-height: 1.5; }
+  .example-tag {
+    display: inline-block;
+    background: var(--gold-pale); color: var(--ink-light);
+    font-size: 13px; padding: 6px 12px; border-radius: 8px;
+    margin-bottom: 20px; font-style: italic;
+  }
+
+  textarea, input[type="text"], input[type="password"] {
+    width: 100%; font-family: 'DM Sans', sans-serif;
+    font-size: 15px; color: var(--ink);
+    background: var(--cream); border: 2px solid #E8E2D9;
+    border-radius: var(--radius); padding: 14px 16px;
+    resize: none; outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s; line-height: 1.6;
+  }
+  textarea { height: 110px; }
+  textarea:focus, input[type="text"]:focus, input[type="password"]:focus {
+    border-color: var(--gold); box-shadow: 0 0 0 4px var(--gold-light);
+  }
+  textarea::placeholder, input::placeholder { color: #B5AFA8; }
+
+  /* Buttons */
+  .btn-primary {
+    display: block; width: 100%;
+    background: var(--gold); color: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px; font-weight: 600;
+    border: none; border-radius: var(--radius);
+    padding: 16px 24px; cursor: pointer;
+    transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+    box-shadow: 0 4px 16px rgba(212,168,71,0.35);
+  }
+  .btn-primary:hover { background: #C29A38; box-shadow: 0 6px 20px rgba(212,168,71,0.45); }
+  .btn-primary:active { transform: scale(0.98); }
+
+  .btn-unsure {
+    display: block; width: 100%;
+    background: transparent; color: var(--ink-light);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px; font-weight: 500;
+    border: 2px dashed #D9D3C7; border-radius: var(--radius);
+    padding: 13px 24px; cursor: pointer; margin-top: 10px;
+    transition: all 0.2s;
+  }
+  .btn-unsure:hover { border-color: var(--ink-light); color: var(--ink); background: var(--cream); }
+
+  .btn-generate {
+    display: block; width: 100%;
+    background: linear-gradient(135deg, var(--coral) 0%, #D4614A 100%);
+    color: white; font-family: 'DM Sans', sans-serif;
+    font-size: 17px; font-weight: 600;
+    border: none; border-radius: var(--radius);
+    padding: 18px 24px; cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 6px 24px rgba(232,120,90,0.4); letter-spacing: 0.01em;
+  }
+  .btn-generate:hover { transform: translateY(-1px); box-shadow: 0 8px 28px rgba(232,120,90,0.5); }
+  .btn-generate:active { transform: scale(0.98); }
+  .btn-generate:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+  .btn-row { display: flex; gap: 10px; margin-top: 10px; }
+  .btn-back {
+    flex: 0 0 auto; background: transparent; color: var(--ink-light);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px; font-weight: 500;
+    border: 2px solid #E8E2D9; border-radius: var(--radius);
+    padding: 13px 18px; cursor: pointer; transition: all 0.2s;
+  }
+  .btn-back:hover { border-color: var(--ink-light); color: var(--ink); }
+
+  /* Sub-questions */
+  .sub-questions {
+    background: var(--sage-light); border-radius: var(--radius);
+    padding: 20px; margin-top: 4px; border: 1.5px solid #C9DBCB;
+  }
+  .sub-label {
+    display: block; font-size: 14px; font-weight: 600;
+    color: var(--sage); margin-bottom: 6px; margin-top: 12px;
+  }
+  .sub-label:first-child { margin-top: 0; }
+  .sub-intro { font-size: 13px; color: var(--ink-light); margin-bottom: 14px; line-height: 1.5; }
+  .sub-questions textarea { background: white; height: 80px; }
+
+  /* Summary */
+  .summary-box {
+    background: var(--cream); border-radius: var(--radius);
+    padding: 20px; margin-bottom: 24px; border: 1.5px solid #E8E2D9;
+  }
+  .summary-item { margin-bottom: 14px; }
+  .summary-item:last-child { margin-bottom: 0; }
+  .summary-key {
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 3px;
+  }
+  .summary-val { font-size: 15px; line-height: 1.5; color: var(--ink); }
+
+  /* API Key */
+  .api-section { margin-bottom: 20px; }
+  .api-label { display: block; font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 8px; }
+  .api-note { font-size: 12px; color: var(--ink-light); margin-top: 6px; line-height: 1.5; }
+  .api-note a { color: var(--coral); }
+
+  /* Output section */
+  .output-section { margin-top: 32px; }
+  .output-section > h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 22px; font-weight: 600;
+    color: var(--ink); margin-bottom: 6px; text-align: center;
+  }
+  .output-section .output-sub {
+    text-align: center; font-size: 14px;
+    color: var(--ink-light); margin-bottom: 20px;
+  }
+
+  /* Output card — renders formatted HTML, no white-space:pre-wrap */
+  .output-card {
+    background: var(--warm-white);
+    border-radius: 20px; padding: 36px;
+    box-shadow: var(--shadow-lg); border: 1px solid #EAE5DD;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px; line-height: 1.8; color: var(--ink);
+    animation: slideUp 0.5s cubic-bezier(0.16,1,0.3,1);
+  }
+  @media (max-width: 480px) { .output-card { padding: 22px 18px; } }
+
+  /* Markdown-rendered element styles inside output-card */
+  .output-card h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(22px, 5vw, 30px);
+    font-weight: 700; line-height: 1.2;
+    color: var(--ink); margin: 0 0 22px;
+  }
+  .output-card h2 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(17px, 3.5vw, 22px);
+    font-weight: 600; color: var(--ink);
+    margin: 30px 0 10px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid var(--gold-light);
+  }
+  .output-card h3 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px; font-weight: 700;
+    color: var(--coral); margin: 22px 0 8px;
+    text-transform: uppercase; letter-spacing: 0.08em;
+  }
+  .output-card p { margin: 0 0 14px; }
+  .output-card p:last-child { margin-bottom: 0; }
+  .output-card ul, .output-card ol { margin: 0 0 14px; padding-left: 22px; }
+  .output-card li { margin-bottom: 6px; }
+  .output-card hr {
+    border: none; border-top: 2px solid var(--gold-light); margin: 26px 0;
+  }
+  .output-card strong { font-weight: 700; color: var(--ink); }
+  .output-card em { font-style: italic; }
+
+  /* Copy & restart */
+  .copy-btn {
+    display: block; width: 100%;
+    background: var(--sage); color: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px; font-weight: 600;
+    border: none; border-radius: var(--radius);
+    padding: 15px 24px; cursor: pointer; margin-top: 16px;
+    transition: all 0.2s;
+    box-shadow: 0 4px 16px rgba(107,143,113,0.3);
+  }
+  .copy-btn:hover { background: #5A7860; }
+
+  .restart-btn {
+    display: block; width: 100%;
+    background: transparent; color: var(--ink-light);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px; font-weight: 500;
+    border: 2px solid #D9D3C7; border-radius: var(--radius);
+    padding: 13px 24px; cursor: pointer; margin-top: 10px;
+    transition: all 0.2s;
+  }
+  .restart-btn:hover { border-color: var(--ink-light); color: var(--ink); }
+
+  /* Loading */
+  .loading-wrap { text-align: center; padding: 40px 20px; }
+  .spinner {
+    width: 48px; height: 48px;
+    border: 4px solid var(--gold-light); border-top-color: var(--gold);
+    border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 20px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading-text { font-family: 'Fraunces', serif; font-size: 18px; font-style: italic; color: var(--ink); margin-bottom: 6px; }
+  .loading-sub { font-size: 14px; color: var(--ink-light); }
+
+  /* Error */
+  .error-box {
+    background: #FDE8E1; border: 1.5px solid #E8785A;
+    border-radius: var(--radius); padding: 16px;
+    margin-top: 16px; font-size: 14px; color: #8B3A25; line-height: 1.6;
+  }
+
+  .divider { border: none; border-top: 1.5px solid #EAE5DD; margin: 20px 0; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <h1>Build Your <em>Perfect</em><br>Lead Magnet in Minutes</h1>
+    <p>Answer 3 quick questions and we'll write your complete lead magnet — ready to publish and share.</p>
+  </div>
+
+  <!-- Progress -->
+  <div class="progress-wrap" id="progressWrap">
+    <div class="progress-steps">
+      <div class="step-dot"><div class="dot active" id="dot1">1</div></div>
+      <div class="step-line" id="line1"></div>
+      <div class="step-dot"><div class="dot upcoming" id="dot2">2</div></div>
+      <div class="step-line" id="line2"></div>
+      <div class="step-dot"><div class="dot upcoming" id="dot3">3</div></div>
+    </div>
+    <div class="progress-label" id="progressLabel">Step 1 of 3 — Who do you help?</div>
+  </div>
+
+  <!-- STEP 1: WHO -->
+  <div class="card" id="step1">
+    <div class="question-num">Question 1 of 3 👤</div>
+    <div class="question-title">Who is your ideal customer?</div>
+    <div class="question-hint">Describe the person you most love to help. Be as specific as possible!</div>
+    <div class="example-tag">e.g. "Busy moms who want to start a side hustle"</div>
+    <div id="step1-main">
+      <textarea id="q1" placeholder="Type your answer here…"></textarea>
+      <div class="btn-row" style="margin-top:14px;">
+        <button class="btn-primary" style="flex:1;" onclick="nextStep(1)">Next →</button>
+      </div>
+      <button class="btn-unsure" onclick="showSub(1)">🤔 I'm not sure — help me figure it out</button>
+    </div>
+    <div id="step1-sub" style="display:none; margin-top:16px;">
+      <div class="sub-questions">
+        <div class="sub-intro">No worries! Let's figure it out together. Answer these two quick questions:</div>
+        <label class="sub-label">What is your job, hobby, or expertise?</label>
+        <textarea id="s1a" placeholder='e.g. "I am a fitness trainer" or "I love baking"'></textarea>
+        <label class="sub-label" style="margin-top:14px;">Who do you love helping most?</label>
+        <textarea id="s1b" placeholder='e.g. "People who want to lose weight but hate the gym"'></textarea>
+      </div>
+      <div class="btn-row" style="margin-top:14px;">
+        <button class="btn-back" onclick="hideSub(1)">← Back</button>
+        <button class="btn-primary" style="flex:1;" onclick="fillFromSub(1)">Figure It Out For Me ✨</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2: WHAT -->
+  <div class="card" id="step2" style="display:none;">
+    <div class="question-num">Question 2 of 3 🎯</div>
+    <div class="question-title">What problem do you solve for them?</div>
+    <div class="question-hint">What keeps your ideal customer up at night? What are they struggling with?</div>
+    <div class="example-tag">e.g. "They don't know where to start or what to sell"</div>
+    <div id="step2-main">
+      <textarea id="q2" placeholder="Type your answer here…"></textarea>
+      <div class="btn-row" style="margin-top:14px;">
+        <button class="btn-back" onclick="goBack(1)">← Back</button>
+        <button class="btn-primary" style="flex:1;" onclick="nextStep(2)">Next →</button>
+      </div>
+      <button class="btn-unsure" onclick="showSub(2)">🤔 I'm not sure — help me figure it out</button>
+    </div>
+    <div id="step2-sub" style="display:none; margin-top:16px;">
+      <div class="sub-questions">
+        <div class="sub-intro">That's okay! Let's dig it out. Answer these two questions:</div>
+        <label class="sub-label">What do people always ask you for help with?</label>
+        <textarea id="s2a" placeholder='e.g. "How to start saving money" or "How to get more clients"'></textarea>
+        <label class="sub-label" style="margin-top:14px;">What is the biggest struggle your audience faces?</label>
+        <textarea id="s2b" placeholder='e.g. "They feel overwhelmed and do not know where to begin"'></textarea>
+      </div>
+      <div class="btn-row" style="margin-top:14px;">
+        <button class="btn-back" onclick="hideSub(2)">← Back</button>
+        <button class="btn-primary" style="flex:1;" onclick="fillFromSub(2)">Figure It Out For Me ✨</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 3: HOW -->
+  <div class="card" id="step3" style="display:none;">
+    <div class="question-num">Question 3 of 3 💡</div>
+    <div class="question-title">What is your solution or offer?</div>
+    <div class="question-hint">How do you help people get results? What do you sell or want to sell?</div>
+    <div class="example-tag">e.g. "A coaching program that helps them launch their first digital product"</div>
+    <div id="step3-main">
+      <textarea id="q3" placeholder="Type your answer here…"></textarea>
+      <div class="btn-row" style="margin-top:14px;">
+        <button class="btn-back" onclick="goBack(2)">← Back</button>
+        <button class="btn-primary" style="flex:1;" onclick="nextStep(3)">Next →</button>
+      </div>
+      <button class="btn-unsure" onclick="showSub(3)">🤔 I'm not sure — help me figure it out</button>
+    </div>
+    <div id="step3-sub" style="display:none; margin-top:16px;">
+      <div class="sub-questions">
+        <div class="sub-intro">No problem! Let's work it out together:</div>
+        <label class="sub-label">What do you sell or want to sell?</label>
+        <textarea id="s3a" placeholder='e.g. "Online courses about social media" or "1-on-1 coaching sessions"'></textarea>
+        <label class="sub-label" style="margin-top:14px;">How do you help people get results?</label>
+        <textarea id="s3b" placeholder='e.g. "I give them a step-by-step system they can follow in 30 days"'></textarea>
+      </div>
+      <div class="btn-row" style="margin-top:14px;">
+        <button class="btn-back" onclick="hideSub(3)">← Back</button>
+        <button class="btn-primary" style="flex:1;" onclick="fillFromSub(3)">Figure It Out For Me ✨</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 4: Review & Generate -->
+  <div class="card" id="step4" style="display:none;">
+    <div class="question-num">🎉 Almost there!</div>
+    <div class="question-title">Here's what we'll create for you</div>
+    <p class="question-hint" style="margin-bottom:20px;">Double-check your info, add your API key, then hit the big button!</p>
+
+    <div class="summary-box">
+      <div class="summary-item">
+        <div class="summary-key">👤 Your Ideal Customer</div>
+        <div class="summary-val" id="sum1"></div>
+      </div>
+      <hr class="divider">
+      <div class="summary-item">
+        <div class="summary-key">🎯 Problem You Solve</div>
+        <div class="summary-val" id="sum2"></div>
+      </div>
+      <hr class="divider">
+      <div class="summary-item">
+        <div class="summary-key">💡 Your Solution or Offer</div>
+        <div class="summary-val" id="sum3"></div>
+      </div>
+    </div>
+
+    <div class="api-section">
+      <label class="api-label" for="apiKey">🔑 Your Claude API Key</label>
+      <input type="password" id="apiKey" placeholder="sk-ant-api03-…">
+      <div class="api-note">
+        Your key is never stored or sent anywhere except directly to Anthropic.
+        Get yours free at <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a>
+      </div>
+    </div>
+
+    <button class="btn-generate" id="generateBtn" onclick="generate()">
+      ✨ Generate My Lead Magnet
+    </button>
+    <div id="errorBox" style="display:none;" class="error-box"></div>
+
+    <div class="btn-row" style="margin-top:12px;">
+      <button class="btn-back" style="width:100%;" onclick="goBack(3)">← Back to edit answers</button>
+    </div>
+  </div>
+
+  <!-- Output -->
+  <div class="output-section" id="outputSection" style="display:none;">
+    <h2>🎉 Your Lead Magnet Is Ready!</h2>
+    <div class="output-sub">Copy it, paste it, publish it. It's all yours!</div>
+    <div class="output-card" id="outputCard"></div>
+    <button class="copy-btn" id="copyBtn" onclick="copyOutput()">📋 Copy to Clipboard</button>
+    <button class="restart-btn" onclick="restart()">🔄 Start Over &amp; Make Another</button>
+  </div>
+</div>
+
+<script>
+  var answers = { who: '', problem: '', solution: '' };
+  var rawOutputText = ''; // plain text stored for clipboard
+
+  // ── Markdown → HTML renderer ──────────────────────────────────────────────
+  function escHtml(s) {
+    return s
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+  }
+
+  function inlineFormat(s) {
+    // bold (**text** or __text__) then italic (*text* or _text_)
+    return s
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/__(.+?)__/g, '<strong>$1</strong>')
+      .replace(/\*(.+?)\*/g, '<em>$1</em>')
+      .replace(/_(.+?)_/g, '<em>$1</em>');
+  }
+
+  function renderMarkdown(md) {
+    var lines = md.split('\n');
+    var html = '';
+    var inUl = false;
+    var inOl = false;
+
+    for (var i = 0; i < lines.length; i++) {
+      var raw = lines[i];
+      var line = raw.trimEnd();
+
+      // H1
+      if (/^# (.+)/.test(line)) {
+        if (inUl) { html += '</ul>'; inUl = false; }
+        if (inOl) { html += '</ol>'; inOl = false; }
+        html += '<h1>' + inlineFormat(escHtml(line.replace(/^# /, ''))) + '</h1>';
+        continue;
+      }
+      // H2
+      if (/^## (.+)/.test(line)) {
+        if (inUl) { html += '</ul>'; inUl = false; }
+        if (inOl) { html += '</ol>'; inOl = false; }
+        html += '<h2>' + inlineFormat(escHtml(line.replace(/^## /, ''))) + '</h2>';
+        continue;
+      }
+      // H3
+      if (/^### (.+)/.test(line)) {
+        if (inUl) { html += '</ul>'; inUl = false; }
+        if (inOl) { html += '</ol>'; inOl = false; }
+        html += '<h3>' + inlineFormat(escHtml(line.replace(/^### /, ''))) + '</h3>';
+        continue;
+      }
+      // Horizontal rule (--- or ***)
+      if (/^[-*]{3,}$/.test(line.trim())) {
+        if (inUl) { html += '</ul>'; inUl = false; }
+        if (inOl) { html += '</ol>'; inOl = false; }
+        html += '<hr>';
+        continue;
+      }
+      // Unordered list item (-, *, or •)
+      if (/^[-*\u2022] (.+)/.test(line)) {
+        if (inOl) { html += '</ol>'; inOl = false; }
+        if (!inUl) { html += '<ul>'; inUl = true; }
+        html += '<li>' + inlineFormat(escHtml(line.replace(/^[-*\u2022] /, ''))) + '</li>';
+        continue;
+      }
+      // Ordered list item (1. 2. etc.)
+      if (/^\d+\. (.+)/.test(line)) {
+        if (inUl) { html += '</ul>'; inUl = false; }
+        if (!inOl) { html += '<ol>'; inOl = true; }
+        html += '<li>' + inlineFormat(escHtml(line.replace(/^\d+\. /, ''))) + '</li>';
+        continue;
+      }
+      // Close any open list if we hit a non-list line
+      if (inUl) { html += '</ul>'; inUl = false; }
+      if (inOl) { html += '</ol>'; inOl = false; }
+      // Blank line — skip (paragraph breaks handled by <p> tags below)
+      if (line.trim() === '') {
+        continue;
+      }
+      // Regular paragraph
+      html += '<p>' + inlineFormat(escHtml(line)) + '</p>';
+    }
+
+    if (inUl) html += '</ul>';
+    if (inOl) html += '</ol>';
+    return html;
+  }
+
+  // ── Step navigation ───────────────────────────────────────────────────────
+  function showStep(n) {
+    ['step1', 'step2', 'step3', 'step4'].forEach(function(id, i) {
+      document.getElementById(id).style.display = (i + 1 === n) ? 'block' : 'none';
+    });
+    updateProgress(n);
+  }
+
+  function updateProgress(step) {
+    var labels = [
+      'Step 1 of 3 \u2014 Who do you help?',
+      'Step 2 of 3 \u2014 What problem do you solve?',
+      'Step 3 of 3 \u2014 What\'s your solution?',
+      'Almost done \u2014 Review & Generate!'
+    ];
+    document.getElementById('progressLabel').textContent = labels[step - 1] || '';
+    document.getElementById('progressWrap').style.display = step <= 3 ? 'block' : 'none';
+    for (var i = 1; i <= 3; i++) {
+      var dot = document.getElementById('dot' + i);
+      dot.className = 'dot ' + (i < step ? 'done' : i === step ? 'active' : 'upcoming');
+      dot.textContent = i < step ? '\u2713' : String(i);
+    }
+    for (var j = 1; j <= 2; j++) {
+      document.getElementById('line' + j).className = 'step-line' + (j < step ? ' done' : '');
+    }
+  }
+
+  function nextStep(from) {
+    if (from === 1) {
+      var val = document.getElementById('q1').value.trim();
+      if (!val) { alert('Please fill in your answer before moving on! \uD83D\uDE0A'); return; }
+      answers.who = val;
+      showStep(2);
+    } else if (from === 2) {
+      var val = document.getElementById('q2').value.trim();
+      if (!val) { alert('Please fill in your answer before moving on! \uD83D\uDE0A'); return; }
+      answers.problem = val;
+      showStep(3);
+    } else if (from === 3) {
+      var val = document.getElementById('q3').value.trim();
+      if (!val) { alert('Please fill in your answer before moving on! \uD83D\uDE0A'); return; }
+      answers.solution = val;
+      document.getElementById('sum1').textContent = answers.who;
+      document.getElementById('sum2').textContent = answers.problem;
+      document.getElementById('sum3').textContent = answers.solution;
+      showStep(4);
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function goBack(to) {
+    showStep(to);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function showSub(q) {
+    document.getElementById('step' + q + '-main').style.display = 'none';
+    document.getElementById('step' + q + '-sub').style.display = 'block';
+  }
+
+  function hideSub(q) {
+    document.getElementById('step' + q + '-sub').style.display = 'none';
+    document.getElementById('step' + q + '-main').style.display = 'block';
+  }
+
+  function fillFromSub(q) {
+    if (q === 1) {
+      var a = document.getElementById('s1a').value.trim();
+      var b = document.getElementById('s1b').value.trim();
+      if (!a || !b) { alert('Please answer both questions! \uD83D\uDE0A'); return; }
+      var filled = b + ' (helped by someone with expertise in ' + a + ')';
+      document.getElementById('q1').value = filled;
+      answers.who = filled;
+      hideSub(1);
+    } else if (q === 2) {
+      var a = document.getElementById('s2a').value.trim();
+      var b = document.getElementById('s2b').value.trim();
+      if (!a || !b) { alert('Please answer both questions! \uD83D\uDE0A'); return; }
+      var filled = b + ' \u2014 and they often ask for help with: ' + a;
+      document.getElementById('q2').value = filled;
+      answers.problem = filled;
+      hideSub(2);
+    } else if (q === 3) {
+      var a = document.getElementById('s3a').value.trim();
+      var b = document.getElementById('s3b').value.trim();
+      if (!a || !b) { alert('Please answer both questions! \uD83D\uDE0A'); return; }
+      var filled = a + ' \u2014 specifically, ' + b;
+      document.getElementById('q3').value = filled;
+      answers.solution = filled;
+      hideSub(3);
+    }
+  }
+
+  // ── Generate ──────────────────────────────────────────────────────────────
+  async function generate() {
+    var apiKey = document.getElementById('apiKey').value.trim();
+    if (!apiKey) { showError('Please enter your Claude API key to continue. \uD83D\uDD11'); return; }
+
+    var btn = document.getElementById('generateBtn');
+    var errorBox = document.getElementById('errorBox');
+    errorBox.style.display = 'none';
+    btn.disabled = true;
+    btn.textContent = '\u2728 Writing your lead magnet\u2026';
+
+    document.getElementById('step4').style.display = 'none';
+    document.getElementById('progressWrap').style.display = 'none';
+
+    var loadDiv = document.createElement('div');
+    loadDiv.id = 'loadingCard';
+    loadDiv.className = 'card';
+    loadDiv.innerHTML = '<div class="loading-wrap"><div class="spinner"></div>'
+      + '<div class="loading-text">Writing your lead magnet\u2026</div>'
+      + '<div class="loading-sub">This usually takes 20\u201340 seconds. Sit tight! \u2615</div></div>';
+    document.querySelector('.container').appendChild(loadDiv);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    var prompt = 'You are an expert lead magnet copywriter.\n\n'
+      + 'Create a complete written lead magnet for:\n'
+      + 'Audience: ' + answers.who + '\n'
+      + 'Problem: ' + answers.problem + '\n'
+      + 'Solution: ' + answers.solution + '\n\n'
+      + 'Write the FULL lead magnet including:\n'
+      + '- A compelling title (mark it with a single # at the start of the line)\n'
+      + '- An opening hook paragraph\n'
+      + '- 3 to 5 complete sections, each with a ## heading and full written content\n'
+      + '- A strong call to action at the end\n\n'
+      + 'Format rules: use # for the main title, ## for section headings, ### for any sub-headings, '
+      + '--- on its own line for a visual divider, **text** for bold emphasis, and - for bullet list items.\n\n'
+      + 'Write it ready to publish. Warm, friendly tone. No jargon. Talk like you\'re explaining to a 5th grader.';
+
+    try {
+      var response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': apiKey,
+          'anthropic-version': '2023-06-01',
+          'anthropic-dangerous-direct-browser-access': 'true'
+        },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 2000,
+          messages: [{ role: 'user', content: prompt }]
+        })
+      });
+
+      var data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error && data.error.message ? data.error.message : 'API error: ' + response.status);
+      }
+
+      var text = '';
+      if (data.content) {
+        data.content.forEach(function(b) { if (b.text) text += b.text; });
+      }
+      if (!text) throw new Error('No content returned from the API.');
+
+      var lc = document.getElementById('loadingCard');
+      if (lc) lc.remove();
+
+      // Store raw markdown for clipboard; render HTML for display
+      rawOutputText = text;
+      document.getElementById('outputCard').innerHTML = renderMarkdown(text);
+      document.getElementById('outputSection').style.display = 'block';
+      window.scrollTo({ top: document.getElementById('outputSection').offsetTop - 20, behavior: 'smooth' });
+
+    } catch (err) {
+      var lc = document.getElementById('loadingCard');
+      if (lc) lc.remove();
+      document.getElementById('step4').style.display = 'block';
+      document.getElementById('progressWrap').style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = '\u2728 Generate My Lead Magnet';
+      showError('Oops! Something went wrong: ' + err.message + '\n\nDouble-check your API key and try again.');
+    }
+  }
+
+  function showError(msg) {
+    var box = document.getElementById('errorBox');
+    box.textContent = msg;
+    box.style.display = 'block';
+  }
+
+  // ── Copy to clipboard — copies the raw markdown text ─────────────────────
+  function copyOutput() {
+    if (!rawOutputText) return;
+    var btn = document.getElementById('copyBtn');
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(rawOutputText).then(function() {
+        btn.textContent = '\u2705 Copied!';
+        setTimeout(function() { btn.textContent = '\uD83D\uDCCB Copy to Clipboard'; }, 2000);
+      }).catch(fallbackCopy);
+    } else {
+      fallbackCopy();
+    }
+
+    function fallbackCopy() {
+      var ta = document.createElement('textarea');
+      ta.value = rawOutputText;
+      ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0;';
+      document.body.appendChild(ta);
+      ta.focus();
+      ta.select();
+      try { document.execCommand('copy'); } catch(e) {}
+      document.body.removeChild(ta);
+      btn.textContent = '\u2705 Copied!';
+      setTimeout(function() { btn.textContent = '\uD83D\uDCCB Copy to Clipboard'; }, 2000);
+    }
+  }
+
+  // ── Restart ───────────────────────────────────────────────────────────────
+  function restart() {
+    ['q1','q2','q3','s1a','s1b','s2a','s2b','s3a','s3b'].forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) el.value = '';
+    });
+    rawOutputText = '';
+    document.getElementById('outputSection').style.display = 'none';
+    document.getElementById('outputCard').innerHTML = '';
+    document.getElementById('errorBox').style.display = 'none';
+    ['step1-sub','step2-sub','step3-sub'].forEach(function(id) {
+      document.getElementById(id).style.display = 'none';
+    });
+    ['step1-main','step2-main','step3-main'].forEach(function(id) {
+      document.getElementById(id).style.display = 'block';
+    });
+    showStep(1);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Init
+  showStep(1);
+</script>
+</body>
+</html>
