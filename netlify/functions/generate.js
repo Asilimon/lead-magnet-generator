@@ -70,7 +70,7 @@ exports.handler = async function (event) {
       },
       body: JSON.stringify({
         model: 'claude-haiku-4-5-20251001',
-        max_tokens: 1400,
+        max_tokens: 1600,
         messages: [{ role: 'user', content: prompt }]
       })
     });
