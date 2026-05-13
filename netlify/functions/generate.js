@@ -39,25 +39,40 @@ exports.handler = async function (event) {
   console.log('Calling Anthropic API...');
 
   const prompt =
-    'You are an expert lead magnet copywriter.\n\n' +
-    'Create a complete written lead magnet for:\n' +
-    'Audience: ' + who + '\n' +
-    'Problem: ' + problem + '\n' +
-    'Solution: ' + solution + '\n\n' +
-    'Write the FULL lead magnet including:\n' +
-    '- A compelling title (mark it with a single # at the start of the line)\n' +
-    '- A short 2 sentence opening hook\n' +
-    '- 3 complete sections with deep, specific, actionable content and real value\n' +
-    '- A strong call to action at the end\n\n' +
-    'Format rules: use # for the main title, ## for section headings, ### for any sub-headings, ' +
-    '--- on its own line for a visual divider, **text** for bold emphasis, and - for bullet list items.\n\n' +
-    'Write it ready to publish. Warm, friendly tone. No jargon.\n' +
-'Talk like you\'re explaining to a 5th grader.\n' +
-'Be extremely specific - include real examples, exact prices, exact steps, and real scenarios.\n' +
-'Never be vague. Instead of "charge a good price" say "charge $25-40 per project."\n' +
-'Instead of "find clients online" say exactly where to go and exactly what to say.\n' +
-'Every sentence should teach something the reader can use TODAY.\n' +
-'Pack in as much specific actionable value as possible.';
+    'You are an expert direct-response content strategist and educational writer.\n' +
+    'Your job is to create a COMPLETE, polished, high-value lead magnet.\n' +
+    'You are writing the FINAL lead magnet. Not notes. Not an outline. The full piece.\n\n' +
+    'INPUT VARIABLES:\n' +
+    'AUDIENCE: ' + who + '\n' +
+    'PROBLEM: ' + problem + '\n' +
+    'SOLUTION / OFFER: ' + solution + '\n' +
+    'FORMAT: PDF-style downloadable guide\n' +
+    'TONE: Warm, friendly, no jargon. Like explaining to a 5th grader.\n' +
+    'WORD COUNT RANGE: 1,200 to 1,800 words\n' +
+    'NUMBER OF SECTIONS: 3\n\n' +
+    'REQUIRED STRUCTURE:\n' +
+    '1. Title (use # heading)\n' +
+    '2. Short 2 sentence opening hook\n' +
+    '3. What you will walk away with (3 bullet points)\n' +
+    '4. Three main content sections (use ## headings) - each with practical advice, real examples, exact prices, and specific scripts or prompts\n' +
+    '5. Quick Start Checklist\n' +
+    '6. CTA offering the next step with the creator\n' +
+    '7. Strong closing paragraph\n\n' +
+    'QUALITY RULES:\n' +
+    '- Be specific, never vague\n' +
+    '- Include real examples, exact prices, word-for-word scripts\n' +
+    '- Never say "charge a fair price" - say "charge $25-40 per project"\n' +
+    '- Never say "find clients online" - say exactly where and what to say\n' +
+    '- Every sentence should teach something usable TODAY\n\n' +
+    'COMPLETION RULES:\n' +
+    '- Write the full piece in one response\n' +
+    '- Do not stop early\n' +
+    '- Do not say "continued" or "part 1"\n' +
+    '- Never end mid-sentence, mid-list, or mid-section\n' +
+    '- If space is tight, compress earlier sections but finish everything\n' +
+    '- Prioritize completion over elaboration\n\n' +
+    'FORMAT: use # for title, ## for sections, **bold** for emphasis, - for bullets, --- for dividers.\n\n' +
+    'Now write the complete finished lead magnet in full. Do not explain what you are about to write. Just write it.';
 
   let response;
   try {
