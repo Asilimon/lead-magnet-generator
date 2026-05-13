@@ -51,7 +51,13 @@ exports.handler = async function (event) {
     '- A strong call to action at the end\n\n' +
     'Format rules: use # for the main title, ## for section headings, ### for any sub-headings, ' +
     '--- on its own line for a visual divider, **text** for bold emphasis, and - for bullet list items.\n\n' +
-    ''Write it ready to publish. Warm, friendly tone. No jargon. Talk like you\'re explaining to a 5th grader. Be extremely specific — include real examples, exact prices, exact steps, and real scenarios. Never say something vague like "charge a good price" — instead say "charge $25-40 per project." Never say "find clients online" — instead say exactly where and exactly what to say to them. Every sentence should teach the reader something they can use TODAY. Pack in as much specific actionable value as possible.';';
+    'Write it ready to publish. Warm, friendly tone. No jargon.\n' +
+'Talk like you\'re explaining to a 5th grader.\n' +
+'Be extremely specific - include real examples, exact prices, exact steps, and real scenarios.\n' +
+'Never be vague. Instead of "charge a good price" say "charge $25-40 per project."\n' +
+'Instead of "find clients online" say exactly where to go and exactly what to say.\n' +
+'Every sentence should teach something the reader can use TODAY.\n' +
+'Pack in as much specific actionable value as possible.';
 
   let response;
   try {
@@ -63,7 +69,7 @@ exports.handler = async function (event) {
         'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
-        model: 'claude-haiku-4-5',
+        model: 'claude-haiku-4-5-20251001',
         max_tokens: 1100,
         messages: [{ role: 'user', content: prompt }]
       })
