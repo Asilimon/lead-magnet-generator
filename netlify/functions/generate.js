@@ -70,7 +70,9 @@ exports.handler = async function (event) {
     '- Do not say "continued" or "part 1"\n' +
     '- Never end mid-sentence, mid-list, or mid-section\n' +
     '- If space is tight, compress earlier sections but finish everything\n' +
-    '- Prioritize completion over elaboration\n\n' +
+    '- Prioritize completion over elaboration\n' +
+    '- If nearing the word limit, compress earlier sections but STILL finish all sections, the checklist, and the CTA\n' +
+'- If space is tight, CUT explanation but KEEP at least 1 example per section, the price table, the scripts, and the checklist\n\n' +
     'FORMAT: use # for title, ## for sections, **bold** for emphasis, - for bullets, --- for dividers.\n\n' +
     'Now write the complete finished lead magnet in full. Do not explain what you are about to write. Just write it.';
 
