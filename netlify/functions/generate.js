@@ -78,6 +78,8 @@ exports.handler = async function (event) {
     '- The 7-Day Action Plan is complete\n' +
     '- The Quick Start Checklist has 5-8 bullets\n' +
     '- There is at least 1 pricing table\n' +
+    '9. Closing CTA mentioning ' + solution + ' (2 sentences maximum)\n' +
+'10. Final closing paragraph (2 sentences maximum)\n' +
     '- There is a Closing CTA AND a final closing paragraph\n' +
     'If ANY required section is missing, shorten earlier sections and COMPLETE the missing parts BEFORE ending.\n\n' +
     'FORMAT: use # for title, ## for sections, **bold** for emphasis, - for bullets, --- for dividers.\n' +
