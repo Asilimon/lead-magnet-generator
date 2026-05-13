@@ -46,8 +46,8 @@ exports.handler = async function (event) {
     'Solution: ' + solution + '\n\n' +
     'Write the FULL lead magnet including:\n' +
     '- A compelling title (mark it with a single # at the start of the line)\n' +
-    '- An opening hook paragraph\n' +
-    '- 3 to 5 complete sections, each with a ## heading and full written content\n' +
+    '- A short 2 sentence opening hook\n' +
+    '- 3 complete sections with deep, specific, actionable content and real value\n' +
     '- A strong call to action at the end\n\n' +
     'Format rules: use # for the main title, ## for section headings, ### for any sub-headings, ' +
     '--- on its own line for a visual divider, **text** for bold emphasis, and - for bullet list items.\n\n' +
