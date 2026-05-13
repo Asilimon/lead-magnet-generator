@@ -1,2 +1,2 @@
 [functions]
-timeout = 30
+  node_bundler = "esbuild"
