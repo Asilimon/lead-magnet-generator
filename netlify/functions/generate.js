@@ -39,42 +39,38 @@ exports.handler = async function (event) {
   console.log('Calling Anthropic API...');
 
   const prompt =
-    'You are an expert direct-response content strategist and educational writer.\n' +
-    'Your job is to create a COMPLETE, polished, high-value lead magnet.\n' +
-    'You are writing the FINAL lead magnet. Not notes. Not an outline. The full piece.\n\n' +
-    'INPUT VARIABLES:\n' +
+    'You are writing a COMPLETE but COMPACT lead magnet.\n\n' +
     'AUDIENCE: ' + who + '\n' +
     'PROBLEM: ' + problem + '\n' +
-    'SOLUTION / OFFER: ' + solution + '\n' +
-    'FORMAT: PDF-style downloadable guide\n' +
-    'TONE: Warm, friendly, no jargon. Like explaining to a 5th grader.\n' +
-    'WORD COUNT RANGE: 1,200 to 1,800 words\n' +
-    'NUMBER OF SECTIONS: 3\n\n' +
-    'REQUIRED STRUCTURE:\n' +
-    '1. Title (use # heading)\n' +
-    '2. Short 2 sentence opening hook\n' +
-    '3. What you will walk away with (3 bullet points)\n' +
-    '4. Three main content sections (use ## headings) - each with practical advice, real examples, exact prices, and specific scripts or prompts\n' +
-    '5. Quick Start Checklist\n' +
-    '6. CTA offering the next step with the creator\n' +
-    '7. Strong closing paragraph\n\n' +
-    'QUALITY RULES:\n' +
-    '- Be specific, never vague\n' +
-    '- Include real examples, exact prices, word-for-word scripts\n' +
-    '- Never say "charge a fair price" - say "charge $25-40 per project"\n' +
-    '- Never say "find clients online" - say exactly where and what to say\n' +
-    '- Every sentence should teach something usable TODAY\n\n' +
-    'COMPLETION RULES:\n' +
-    '- Write the full piece in one response\n' +
-    '- Do not stop early\n' +
-    '- Do not say "continued" or "part 1"\n' +
-    '- Never end mid-sentence, mid-list, or mid-section\n' +
-    '- If space is tight, compress earlier sections but finish everything\n' +
-    '- Prioritize completion over elaboration\n' +
-    '- If nearing the word limit, compress earlier sections but STILL finish all sections, the checklist, and the CTA\n' +
-'- If space is tight, CUT explanation but KEEP at least 1 example per section, the price table, the scripts, and the checklist\n\n' +
-    'FORMAT: use # for title, ## for sections, **bold** for emphasis, - for bullets, --- for dividers.\n\n' +
-    'Now write the complete finished lead magnet in full. Do not explain what you are about to write. Just write it.';
+    'SOLUTION / OFFER: ' + solution + '\n\n' +
+    'LENGTH:\n' +
+    '- Total: 1,200 to 1,500 words\n' +
+    '- Keep every section short and punchy\n' +
+    '- Do not add new sections beyond what is listed below\n\n' +
+    'REQUIRED SECTIONS:\n' +
+    '1. Title + opening hook\n' +
+    '2. What You Will Walk Away With (3-5 bullets)\n' +
+    '3. Section 1: Three main services or strategies - for EACH include: 2-3 sentences on what it is and why it works, 1 simple how-to example, 1 price range, 1-2 places to find clients. No more than 1 example per service.\n' +
+    '4. Section 2: Pricing and Scripts - one compact pricing table, exactly 3 outreach scripts, one short first payment script that ends the section cleanly\n' +
+    '5. Section 3: 7-Day Action Plan - Days 1-7 with 1-2 bullets per day focused on getting the first client\n' +
+    '6. Quick Start Checklist (5-8 checkbox bullets)\n' +
+    '7. Closing encouragement + soft CTA mentioning ' + solution + '\n\n' +
+    'CONSTRAINTS:\n' +
+    '- Total examples per service: 1\n' +
+    '- Total outreach scripts: 3\n' +
+    '- Total tables: 1\n' +
+    '- Do not introduce new tools or long case studies\n' +
+    '- If running long, shorten explanations but still complete the 7-Day Action Plan, the Quick Start Checklist, and the closing CTA\n\n' +
+    'COMPLETION RULE:\n' +
+    '- Finish all 7 sections\n' +
+    '- End with closing paragraph and CTA\n' +
+    '- Never stop mid-sentence or mid-bullet\n' +
+    '- Never say "continued" or "part 2"\n' +
+    '- If nearing the word limit, compress earlier sections but STILL finish everything\n' +
+    '- If space is tight, CUT explanation but KEEP the 7-Day Plan, checklist, and CTA\n\n' +
+    'FORMAT: use # for title, ## for sections, **bold** for emphasis, - for bullets, --- for dividers.\n' +
+    'Tone: warm, friendly, no jargon. Specific - use exact prices and real scripts.\n\n' +
+    'Now write the COMPLETE lead magnet in one response. Do not explain. Just write it.';
 
   let response;
   try {
