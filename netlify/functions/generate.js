@@ -39,38 +39,50 @@ exports.handler = async function (event) {
   console.log('Calling Anthropic API...');
 
   const prompt =
-    'You are writing a COMPLETE but COMPACT lead magnet.\n\n' +
+    'You are an expert lead magnet writer.\n' +
+    'Your task is to generate a COMPLETE, polished, skimmable lead magnet.\n' +
+    'Return only final formatted content.\n' +
+    'Do not output notes, planning text, explanations, or an outline.\n' +
+    'Do not stop early.\n' +
+    'Do not ask if the user wants part 2.\n' +
+    'Do not end mid-sentence, mid-list, mid-table, or mid-section.\n' +
+    'If the draft becomes too long, shorten explanations and examples, but ALWAYS complete the full document.\n\n' +
     'AUDIENCE: ' + who + '\n' +
     'PROBLEM: ' + problem + '\n' +
     'SOLUTION / OFFER: ' + solution + '\n\n' +
-    'LENGTH:\n' +
-    '- Total: 1,200 to 1,500 words\n' +
-    '- Keep every section short and punchy\n' +
-    '- Do not add new sections beyond what is listed below\n\n' +
-    'REQUIRED SECTIONS:\n' +
-    '1. Title + opening hook\n' +
-    '2. What You Will Walk Away With (3-5 bullets)\n' +
-    '3. Section 1: Three main services or strategies - for EACH include: 2-3 sentences on what it is and why it works, 1 simple how-to example, 1 price range, 1-2 places to find clients. No more than 1 example per service.\n' +
-    '4. Section 2: Pricing and Scripts - one compact pricing table, exactly 3 outreach scripts, one short first payment script that ends the section cleanly\n' +
-    '5. Section 3: 7-Day Action Plan - Days 1-7 with 1-2 bullets per day focused on getting the first client\n' +
-    '6. Quick Start Checklist (5-8 checkbox bullets)\n' +
-    '7. Closing encouragement + soft CTA mentioning ' + solution + '\n\n' +
-    'CONSTRAINTS:\n' +
-    '- Total examples per service: 1\n' +
-    '- Total outreach scripts: 3\n' +
-    '- Total tables: 1\n' +
-    '- Do not introduce new tools or long case studies\n' +
-    '- If running long, shorten explanations but still complete the 7-Day Action Plan, the Quick Start Checklist, and the closing CTA\n\n' +
+    'A successful output MUST include ALL of the following sections in this order:\n' +
+    '1. Title\n' +
+    '2. Hook\n' +
+    '3. What You Will Walk Away With (3-5 bullets)\n' +
+    '4. Section 1 (first core topic)\n' +
+    '5. Section 2 (second core topic)\n' +
+    '6. Section 3 (third core topic)\n' +
+    '7. 7-Day Action Plan\n' +
+    '8. Quick Start Checklist\n' +
+    '9. Closing CTA mentioning ' + solution + '\n' +
+    '10. Final closing paragraph\n\n' +
+    'Do NOT add extra sections.\n' +
+    'Do NOT rename or reorder these sections.\n\n' +
+    'HARD LIMITS:\n' +
+    '- Total length: 1,200 to 1,600 words\n' +
+    '- Maximum 3 core services or main ideas\n' +
+    '- Maximum 1 example per service\n' +
+    '- Maximum 1 pricing table\n' +
+    '- Maximum 3 outreach or sales scripts\n' +
+    '- Maximum 2 bullets per day in the 7-Day Action Plan\n' +
+    '- Maximum 8 bullets in the Quick Start Checklist\n\n' +
+    'If token or length pressure occurs, REDUCE DETAIL, NOT COMPLETENESS.\n\n' +
     'COMPLETION RULE:\n' +
-    '- Finish all 7 sections\n' +
-    '- End with closing paragraph and CTA\n' +
-    '- Never stop mid-sentence or mid-bullet\n' +
-    '- Never say "continued" or "part 2"\n' +
-    '- If nearing the word limit, compress earlier sections but STILL finish everything\n' +
-    '- If space is tight, CUT explanation but KEEP the 7-Day Plan, checklist, and CTA\n\n' +
+    'Before ending, silently verify that:\n' +
+    '- All 10 required sections are present\n' +
+    '- The 7-Day Action Plan is complete\n' +
+    '- The Quick Start Checklist has 5-8 bullets\n' +
+    '- There is at least 1 pricing table\n' +
+    '- There is a Closing CTA AND a final closing paragraph\n' +
+    'If ANY required section is missing, shorten earlier sections and COMPLETE the missing parts BEFORE ending.\n\n' +
     'FORMAT: use # for title, ## for sections, **bold** for emphasis, - for bullets, --- for dividers.\n' +
-    'Tone: warm, friendly, no jargon. Specific - use exact prices and real scripts.\n\n' +
-    'Now write the COMPLETE lead magnet in one response. Do not explain. Just write it.';
+    'Tone: warm, friendly, no jargon, specific to the audience. Use exact prices and real scripts.\n\n' +
+    'Now generate the final complete lead magnet. Do not explain. Just write it.';
 
   let response;
   try {
